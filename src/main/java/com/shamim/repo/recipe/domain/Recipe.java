@@ -1,6 +1,8 @@
 package com.shamim.repo.recipe.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -20,6 +22,8 @@ public class Recipe {
     private Byte[] image;
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    Set<Ingredient> ingredients;
 
     public String getDescription() {
         return description;
@@ -91,5 +95,21 @@ public class Recipe {
 
     public void setNotes(Notes notes) {
         this.notes = notes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
