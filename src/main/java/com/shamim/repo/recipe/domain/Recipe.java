@@ -26,6 +26,19 @@ public class Recipe {
     private Notes notes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
     Set<Ingredient> ingredients;
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+               joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 
     public String getDescription() {
         return description;
