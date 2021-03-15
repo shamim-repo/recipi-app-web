@@ -1,5 +1,7 @@
 package com.shamim.repo.recipe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -13,6 +15,7 @@ public class Ingredient {
     @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure unitOfMeasure;
     @ManyToOne
+    @JsonIgnore
     private Recipe recipe;
 
     public Ingredient() {

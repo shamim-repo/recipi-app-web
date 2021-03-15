@@ -1,5 +1,7 @@
 package com.shamim.repo.recipe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +10,7 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
+    @JsonIgnore
     private Recipe recipe;
     @Lob
     private String recipeNotes;
