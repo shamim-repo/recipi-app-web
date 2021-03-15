@@ -1,6 +1,7 @@
 package com.shamim.repo.recipe.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,7 +11,7 @@ public class Category {
     private Long id;
     private String description;
     @ManyToMany(mappedBy = "categories")
-    Set<Recipe> recipes;
+    Set<Recipe> recipes=new HashSet<>();
 
     public Long getId() {
         return id;

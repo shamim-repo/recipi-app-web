@@ -1,10 +1,8 @@
 package com.shamim.repo.recipe.controller;
 
-import com.shamim.repo.recipe.domain.Category;
-import com.shamim.repo.recipe.domain.UnitOfMeasure;
-import com.shamim.repo.recipe.repository.CategoryRepository;
-import com.shamim.repo.recipe.repository.UnitOfMeasureRepository;
+import com.shamim.repo.recipe.service.RecipeService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
@@ -12,22 +10,17 @@ import java.util.Optional;
 @Controller
 public class IndexController {
 
-    private CategoryRepository categoryRepository;
-    private UnitOfMeasureRepository unitOfMeasureRepository;
+    private RecipeService recipeService;
 
-    public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
+    public IndexController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
     @RequestMapping({"","/","index","index.html"})
-    public String getIndexPage(){
+    public String getIndexPage(Model model){
 
-        Optional<Category> categoryOptional= categoryRepository.findByDescription("American");
-        Optional<UnitOfMeasure> unitOfMeasureOptional= unitOfMeasureRepository.findByDescription("Teaspoon");
+        model.addAttribute("recipes",recipeService.getRecipes());
 
-        System.out.println("Cat Id is :"+categoryOptional.get().getId());
-        System.out.println("UM Id is :"+unitOfMeasureOptional.get().getId());
         return "index";
     }
 }

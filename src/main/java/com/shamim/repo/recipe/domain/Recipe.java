@@ -16,6 +16,7 @@ public class Recipe {
     private Integer serving;
     private String source;
     private String url;
+    @Lob
     private String direction;
     //to do
     @Lob
@@ -25,12 +26,12 @@ public class Recipe {
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    Set<Ingredient> ingredients;
+    Set<Ingredient> ingredients =new HashSet<>();
     @ManyToMany
     @JoinTable(name = "recipe_category",
                joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories=new HashSet<>();
 
     public Set<Category> getCategories() {
         return categories;
