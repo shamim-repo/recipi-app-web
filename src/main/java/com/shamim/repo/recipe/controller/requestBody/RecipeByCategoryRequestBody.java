@@ -1,8 +1,5 @@
 package com.shamim.repo.recipe.controller.requestBody;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.List;
 
 public class RecipeByCategoryRequestBody {
