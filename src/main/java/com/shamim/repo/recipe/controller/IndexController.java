@@ -24,11 +24,9 @@ import java.util.Set;
 public class IndexController {
 
     private final RecipeService recipeService;
-    private final CategoryService categoryService;
 
-    public IndexController(RecipeService recipeService, CategoryService categoryService) {
+    public IndexController(RecipeService recipeService) {
         this.recipeService = recipeService;
-        this.categoryService = categoryService;
     }
 
 
