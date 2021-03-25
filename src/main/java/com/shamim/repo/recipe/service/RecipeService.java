@@ -1,12 +1,7 @@
 package com.shamim.repo.recipe.service;
 
-import com.shamim.repo.recipe.domain.Category;
-import com.shamim.repo.recipe.domain.Recipe;
 
-import java.util.List;
-import java.util.Set;
+import com.shamim.repo.recipe.repository.RecipeRepository;
 
-public interface RecipeService {
-    Set<Recipe> getRecipes();
-    Iterable<Recipe> getRecipesByCategories(Iterable<Long> categories);
+public interface RecipeService extends RecipeRepository {
 }
