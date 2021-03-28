@@ -17,6 +17,9 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 class IndexControllerTest {
     @Mock
@@ -33,9 +36,10 @@ class IndexControllerTest {
 
 
     @Test
-    void mockMvc() {
+    void mockMvc() throws Exception {
         MockMvc mockMvc= MockMvcBuilders.standaloneSetup(indexController).build();
-        //mockMvc.perform(get()).andExpect(status().isOk()).andExpect(view().name("index"));
+        mockMvc.perform(get("/")).andExpect(status().isOk())
+                .andExpect(view().name("index"));
 
     }
 

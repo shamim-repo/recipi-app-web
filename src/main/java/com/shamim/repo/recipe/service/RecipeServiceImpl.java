@@ -7,6 +7,7 @@ import com.shamim.repo.recipe.domain.Recipe;
 import com.shamim.repo.recipe.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -28,12 +29,18 @@ public class RecipeServiceImpl implements RecipeService{
 
 
     @Override
-    public Recipe findById(Long aLong) {
+    public Recipe findRecipeById(Long aLong) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(aLong);
         if (!recipeOptional.isPresent()) {
             throw new RuntimeException("Recipe Not Found!");
         }
         return recipeOptional.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findRecipeCommandById(Long aLong) {
+        return recipeToRecipeCommand.convert(findRecipeById(aLong));
     }
 
     @Override
@@ -44,10 +51,16 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     @Override
+    @Transactional
     public RecipeCommand saveRecipeCommand(RecipeCommand command) {
         Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
         Recipe savedRecipe = recipeRepository.save(detachedRecipe);
         log.debug("savedRecipe ID :"+savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
+    public void deleteRecipe(Long aLong) {
+        recipeRepository.deleteById(aLong);
     }
 }

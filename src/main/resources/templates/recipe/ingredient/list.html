@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Recipe Home</title>
+    <title>List Ingredients</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -12,7 +12,6 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-</head>
 
 </head>
 <body>
@@ -22,10 +21,11 @@
             <div class="panel panel-primary">
 
                 <div class="panel-heading">
-                    <h1 class="panel-title">My Recipes!</h1>
+                    <h1 class="panel-title">Ingredients</h1>
                 </div>
                 <div class="panel-body">
-                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
+
+                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipe.ingredients)}">
                         <table class="table table-hover ">
                             <thead class="thead-inverse">
                             <tr>
@@ -33,22 +33,29 @@
                                 <th>Description</th>
                                 <th>View</th>
                                 <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">123</td>
-                                <td th:text="${recipe.description}">Tasty Goodnees 1</td>
+                                <td>123</td>
+                                <td>Tasty Goodnees 1</td>
+                                <td><a href="#">View</a></td>
+                                <td><a href="#">Update</a></td>
+                                <td><a href="#">Delete</a></td>
                             </tr>
                             <tr th:remove="all">
-                                <td th:text="${recipe.id}">12333</td>
-                                <td th:text="${recipe.description}">Tasty Goodnees 2</td>
+                                <td>12333</td>
+                                <td>Tasty Goodnees 2</td>
+                                <td><a href="#">View</a></td>
+                                <td><a href="#">Update</a></td>
+                                <td><a href="#">Delete</a></td>
                             </tr>
-                            <tr th:each="recipe : ${recipes}">
-                                <td th:text="${recipe.id}">334</td>
-                                <td th:text="${recipe.description}">Tasty Goodnees 3</td>
-                                <td> <a href="#" th:href="@{'/recipe/'+${recipe.id}+'/show'}" >View</a></td>
-                                <td> <a href="#" th:href="@{'/recipe/'+${recipe.id}+'/update'}" >Update</a></td>
-                                <td> <a href="#" th:href="@{'/recipe/'+${recipe.id}+'/delete'}" >Delete</a></td>
+                            <tr th:each="ingredient : ${recipe.ingredients}">
+                                <td th:text="${ingredient.id}">334</td>
+                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.unitOfMeasure.description} + ' ' + ${ingredient.description} + '/show'">Tasty Goodnees 3</td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/ingredient/' + ${ingredient.id} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>
@@ -57,5 +64,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

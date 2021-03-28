@@ -3,7 +3,7 @@ package com.shamim.repo.recipe.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RecipeServiceImplTest {
+class RecipeServiceTest {
 
     @BeforeEach
     void setUp() {
