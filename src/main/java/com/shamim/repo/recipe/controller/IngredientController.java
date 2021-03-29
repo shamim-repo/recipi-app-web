@@ -40,7 +40,7 @@ public class IngredientController {
         return "recipe/ingredient/show";
     }
     @RequestMapping("recipe/{recipeId}/ingredient/new")
-    public String updateIngredient(@PathVariable String recipeId,Model model){
+    public String newIngredient(@PathVariable String recipeId,Model model){
 
         IngredientCommand ingredientCommand=new IngredientCommand();
         ingredientCommand.setRecipeId(Long.valueOf(recipeId));
