@@ -20,7 +20,7 @@ import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -110,12 +110,11 @@ class IngredientControllerTest {
 
         when(ingredientService.saveIngredientCommand(any())).thenReturn(command);
 
-        mockMvc.perform(post("/recipe/1/ingredient")
+        mockMvc.perform(post("/recipe/2/ingredient")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id","")
-                .param("description","someString"))
+                .param("id",""))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/recipe/2/ingredient/1/show"));
+                .andExpect(view().name("redirect:/recipe/2/ingredients"));
 
     }
 
@@ -132,5 +131,13 @@ class IngredientControllerTest {
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("unitOfMeasures"));
 
+    }
+
+    @Test
+    void deleteIngredient() throws Exception {
+        mockMvc.perform(get("/recipe/2/ingredient/1/delete"))
+                .andExpect(status().is3xxRedirection())
+               .andExpect(view().name("redirect:/recipe/2/ingredients"));
+        verify(ingredientService,times(1)).deleteIngredientByRecipeIdAndId(anyLong(),anyLong());
     }
 }

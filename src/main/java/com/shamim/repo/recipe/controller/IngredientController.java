@@ -8,10 +8,7 @@ import com.shamim.repo.recipe.service.UnitOfMeasureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -26,20 +23,20 @@ public class IngredientController {
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
-    @RequestMapping("recipe/{id}/ingredients")
+    @GetMapping("recipe/{id}/ingredients")
     public String getIngredientList(@PathVariable String id, Model model){
         model.addAttribute("recipe", recipeService.findRecipeCommandById(Long.valueOf(id)));
         return "recipe/ingredient/list";
     }
 
-    @RequestMapping("recipe/{recipeId}/ingredient/{ingredientId}/show")
+    @GetMapping("recipe/{recipeId}/ingredient/{ingredientId}/show")
     public String getIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model){
         model.addAttribute("ingredient",
                         ingredientService.findIngredientByRecipeIdAndId(Long.valueOf(recipeId)
                         ,Long.valueOf(ingredientId)));
         return "recipe/ingredient/show";
     }
-    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    @GetMapping("recipe/{recipeId}/ingredient/new")
     public String newIngredient(@PathVariable String recipeId,Model model){
 
         IngredientCommand ingredientCommand=new IngredientCommand();
@@ -50,7 +47,7 @@ public class IngredientController {
         model.addAttribute("unitOfMeasures",unitOfMeasureService.getUnitOfMeasures());
         return "recipe/ingredient/ingredientform";
     }
-    @RequestMapping("recipe/{recipeId}/ingredient/{ingredientId}/delete")
+    @GetMapping("recipe/{recipeId}/ingredient/{ingredientId}/delete")
     public String deleteIngredient(@PathVariable String recipeId, @PathVariable String ingredientId){
 
         ingredientService.deleteIngredientByRecipeIdAndId(Long.valueOf(recipeId),
@@ -60,7 +57,7 @@ public class IngredientController {
     }
 
 
-    @RequestMapping("recipe/{recipeId}/ingredient/{ingredientId}/update")
+    @GetMapping("recipe/{recipeId}/ingredient/{ingredientId}/update")
     public String updateIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model){
         model.addAttribute("ingredient",
                 ingredientService.findIngredientByRecipeIdAndId(Long.valueOf(recipeId)
