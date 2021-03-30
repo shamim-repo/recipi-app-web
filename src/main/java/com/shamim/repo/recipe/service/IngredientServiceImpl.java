@@ -19,14 +19,14 @@ import java.util.Set;
 @Service
 public class IngredientServiceImpl implements IngredientService{
 
-    private final IngredientRepository repository;
+    private final IngredientRepository ingredientRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
     private final RecipeRepository recipeRepository;
     private final IngredientToIngredientCommand toIngredientCommand;
     private final IngredientCommandToIngredient toIngredient;
 
-    public IngredientServiceImpl(IngredientRepository repository, UnitOfMeasureRepository unitOfMeasureRepository, RecipeRepository recipeRepository, IngredientToIngredientCommand toIngredientCommand, IngredientCommandToIngredient toIngredient) {
-        this.repository = repository;
+    public IngredientServiceImpl(IngredientRepository ingredientRepository, UnitOfMeasureRepository unitOfMeasureRepository, RecipeRepository recipeRepository, IngredientToIngredientCommand toIngredientCommand, IngredientCommandToIngredient toIngredient) {
+        this.ingredientRepository = ingredientRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.recipeRepository = recipeRepository;
         this.toIngredientCommand = toIngredientCommand;
@@ -35,7 +35,7 @@ public class IngredientServiceImpl implements IngredientService{
 
     @Override
     public Ingredient findIngredientById(Long aLong) {
-        Optional<Ingredient> optional = repository.findById(aLong);
+        Optional<Ingredient> optional = ingredientRepository.findById(aLong);
         if (!optional.isPresent()) {
             throw new RuntimeException("Recipe Not Found!");
         }
@@ -118,8 +118,27 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public void deleteIngredient(Long aLong) {
+    public void deleteIngredientByRecipeIdAndId(Long aLong, Long bLong) {
+            Optional<Recipe> recipeOptional=recipeRepository.findById(aLong);
 
+            if(!recipeOptional.isPresent()){
+                throw new RuntimeException("No recipe present by id :"+aLong);
+            }else {
+                Recipe recipe=recipeOptional.get();
+               Optional<Ingredient> ingredientOptional=recipe
+                       .getIngredients().stream()
+                       .filter(ingredient1 -> ingredient1.getId().equals(bLong))
+                       .findFirst();
+
+               if (!ingredientOptional.isPresent()){
+                   throw new RuntimeException("No ingredient present by id :"+aLong);
+               }else {
+                   Ingredient ingredientToDelete=ingredientOptional.get();
+                   ingredientToDelete.setRecipe(null);
+                   recipe.getIngredients().remove(ingredientOptional.get());
+                   recipeRepository.save(recipe);
+               }
+            }
     }
 
 }

@@ -12,5 +12,5 @@ public interface IngredientService {
     IngredientCommand findIngredientCommandByRecipeIdAndId(Long aLong,Long bLong);
     Set<Ingredient> getIngredients();
     IngredientCommand saveIngredientCommand(IngredientCommand command);
-    void deleteIngredient(Long aLong);
+    void deleteIngredientByRecipeIdAndId(Long aLong,Long bLong);
 }
