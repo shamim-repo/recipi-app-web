@@ -2,13 +2,16 @@ package com.shamim.repo.recipe.controller;
 
 import com.shamim.repo.recipe.commands.IngredientCommand;
 import com.shamim.repo.recipe.commands.UnitOfMeasureCommand;
+import com.shamim.repo.recipe.exception.NotFoundException;
 import com.shamim.repo.recipe.service.IngredientService;
 import com.shamim.repo.recipe.service.RecipeService;
 import com.shamim.repo.recipe.service.UnitOfMeasureService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -24,7 +27,7 @@ public class IngredientController {
     }
 
     @GetMapping("recipe/{id}/ingredients")
-    public String getIngredientList(@PathVariable String id, Model model){
+    public String getIngredientList(@PathVariable String id, Model model) {
         model.addAttribute("recipe", recipeService.findRecipeCommandById(Long.valueOf(id)));
         return "recipe/ingredient/list";
     }
@@ -70,5 +73,14 @@ public class IngredientController {
     public String saveOrUpdate(@ModelAttribute IngredientCommand ingredientCommand){
         IngredientCommand savedCommand = ingredientService.saveIngredientCommand(ingredientCommand);
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredients";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound(Exception exception){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("exception",exception);
+        modelAndView.setViewName("404error");
+        return modelAndView;
     }
 }

@@ -4,6 +4,7 @@ import com.shamim.repo.recipe.commands.RecipeCommand;
 import com.shamim.repo.recipe.converters.RecipeCommandToRecipe;
 import com.shamim.repo.recipe.converters.RecipeToRecipeCommand;
 import com.shamim.repo.recipe.domain.Recipe;
+import com.shamim.repo.recipe.exception.NotFoundException;
 import com.shamim.repo.recipe.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,14 @@ public class RecipeServiceImpl implements RecipeService{
     public Recipe findRecipeById(Long aLong) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(aLong);
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found By Id :"+aLong);
         }
         return recipeOptional.get();
     }
 
     @Override
     @Transactional
-    public RecipeCommand findRecipeCommandById(Long aLong) {
+    public RecipeCommand findRecipeCommandById(Long aLong){
         return recipeToRecipeCommand.convert(findRecipeById(aLong));
     }
 

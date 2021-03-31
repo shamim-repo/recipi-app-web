@@ -5,6 +5,7 @@ import com.shamim.repo.recipe.converters.IngredientCommandToIngredient;
 import com.shamim.repo.recipe.converters.IngredientToIngredientCommand;
 import com.shamim.repo.recipe.domain.Ingredient;
 import com.shamim.repo.recipe.domain.Recipe;
+import com.shamim.repo.recipe.exception.NotFoundException;
 import com.shamim.repo.recipe.repository.IngredientRepository;
 import com.shamim.repo.recipe.repository.RecipeRepository;
 import com.shamim.repo.recipe.repository.UnitOfMeasureRepository;
@@ -36,8 +37,9 @@ public class IngredientServiceImpl implements IngredientService{
     @Override
     public Ingredient findIngredientById(Long aLong) {
         Optional<Ingredient> optional = ingredientRepository.findById(aLong);
+
         if (!optional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Ingredient Not Found By Id +"+aLong);
         }
         return optional.get();
     }
@@ -48,6 +50,7 @@ public class IngredientServiceImpl implements IngredientService{
 
         if (!recipeOptional.isPresent()){
             log.error("recipe id not found. Id: " + aLong);
+            throw new NotFoundException("Recipe Not Found by id: "+aLong);
         }
 
         Recipe recipe = recipeOptional.get();
@@ -57,7 +60,7 @@ public class IngredientServiceImpl implements IngredientService{
                 .map( ingredient -> toIngredientCommand.convert(ingredient)).findFirst();
 
         if(!ingredientCommandOptional.isPresent()){
-            log.error("Ingredient id not found: " + bLong);
+            throw new RuntimeException("Ingredient Not Found By Id +"+bLong);
         }
 
         return ingredientCommandOptional.get();

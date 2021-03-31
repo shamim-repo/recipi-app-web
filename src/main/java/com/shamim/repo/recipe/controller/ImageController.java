@@ -3,6 +3,7 @@ package com.shamim.repo.recipe.controller;
 import com.shamim.repo.recipe.commands.RecipeCommand;
 import com.shamim.repo.recipe.service.ImageService;
 import com.shamim.repo.recipe.service.RecipeService;
+import javassist.NotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,13 +32,13 @@ public class ImageController {
     }
 
     @GetMapping("recipe/{recipeId}/image")
-    public String showUploadForm(@PathVariable String recipeId, Model model){
+    public String showUploadForm(@PathVariable String recipeId, Model model) throws NotFoundException {
         model.addAttribute("recipe",recipeService.findRecipeCommandById(Long.valueOf(recipeId)));
         return "recipe/imageuploadform";
     }
 
     @GetMapping("recipe/{recipeId}/recipeImage")
-    public void renderImageFromDB(@PathVariable String recipeId, HttpServletResponse response)throws IOException {
+    public void renderImageFromDB(@PathVariable String recipeId, HttpServletResponse response) throws IOException, NotFoundException {
         RecipeCommand recipeCommand=recipeService.findRecipeCommandById(Long.valueOf(recipeId));
 
         byte[] bytes=new byte[recipeCommand.getImage().length];
@@ -53,7 +54,7 @@ public class ImageController {
 
     @PostMapping("recipe/{recipeId}/image")
     public String saveImage(@PathVariable String recipeId, @RequestParam("imagefile")MultipartFile file){
-        imageService.sameImage(Long.valueOf(recipeId),file);
+        imageService.saveImage(Long.valueOf(recipeId),file);
         return "redirect:/recipe/"+recipeId+"/show";
     }
 }
